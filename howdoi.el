@@ -272,6 +272,11 @@ results."
                           (funcall howdoi-display-callback question answers snippets)))
                       nil t)))))
 
+(defun howdoi-html2text ()
+  (if (fboundp 'html2text)
+      (html2text)
+    (shr-render-region (point-min) (point-max))))
+
 (defun howdoi-browse-url (button)
   "Retrieve URL from a BUTTON's property and browse it."
   (interactive)
@@ -310,7 +315,7 @@ results."
               (insert str)
               (goto-char (point-min))
               (howdoi-replace-html-ahref-tags)
-              (html2text)
+              (howdoi-html2text)
               (howdoi-strip-html-tags '("code"))
               (setq result (buffer-substring
                             (point-min)
@@ -330,7 +335,7 @@ results."
               (insert str)
               (goto-char (point-min))
               (howdoi-replace-html-ahref-tags)
-              (html2text)
+              (howdoi-html2text)
               (howdoi-strip-html-tags '("code"))
               (setq result (append result `(,(buffer-substring (point-min) (point-max))))))))))
     result))
